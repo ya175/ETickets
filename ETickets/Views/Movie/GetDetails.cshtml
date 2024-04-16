@@ -1,0 +1,133 @@
+﻿@using ETickets.Data.Enums
+@using ETickets.ViewModels;
+@model MovieWithCinemaCategoryViewModel
+
+
+<div class="card">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="/images/movies/@Model.MovieImgUrl" class="img-fluid rounded-start" alt="@Model.MovieName">
+      
+        </div>
+       
+
+        
+
+        <div class="col-md-8">
+            <div class="card-body">
+                <h1 class="card-title"> @Model.MovieName</h1>
+            </div>
+            <div class="card-body">
+                @Model.MovieDescription
+            </div>
+
+<div class="card-body">
+                @if (Model.MovieStatus == MovieStatus.Expired)
+                {
+                    <span class="badge badge-danger" style="background-color: darkred">@Model.MovieStatus</span>
+                    <span class="badge badge-danger" style="background-color: darkred">@Model.CinemaName Cinema</span>
+                    <span class="badge badge-danger" style="background-color: darkred">@Model.MoviePrice $</span>
+                   
+                    <a asp-action="FindMoviesByCategoryId" asp-controller="Movie" asp-route-id="@Model.CategoryId">
+                        <span class="badge badge-danger" style="background-color: darkred"> @Model.CategoryName</span>
+                    </a>
+
+          }
+                else if (Model.MovieStatus == MovieStatus.Available)
+                {
+                    <span class="badge badge-danger" style="background-color: dodgerblue">@Model.MovieStatus</span>
+                    <span class="badge badge-danger" style="background-color: dodgerblue">@Model.CinemaName Cinema </span>
+                    <span class="badge badge-danger" style="background-color: dodgerblue">@Model.MoviePrice $</span>
+                     <a asp-action="FindMoviesByCategoryId" asp-controller="Movie" asp-route-id="@Model.CategoryId">
+                        <span class="badge badge-danger" style="background-color: dodgerblue"> @Model.CategoryName</span>
+                    </a>
+
+                }
+                else if (Model.MovieStatus == MovieStatus.Upcoming)
+                {
+                    <span class="badge badge-danger" style="background-color: gray">@Model.MovieStatus</span>
+                        <span class="badge badge-danger" style="background-color: gray">@Model.CinemaName Cinema</span>
+                    <span class="badge badge-danger" style="background-color: gray">@Model.MoviePrice $</span>
+                    <a asp-action="FindMoviesByCategoryId" asp-controller="Movie" asp-route-id="@Model.CategoryId">
+                        <span class="badge badge-danger" style="background-color: gray"> @Model.CategoryName</span>
+                    </a>
+                }
+            </div>
+
+
+            @* Actors *@
+
+             @foreach (var Actor in (List<Actor>)@ViewData["Actors"])
+            {
+                @* <img src="..." alt="..." class="img-thumbnail"> *@
+                @* <img src="~/images/cast/@Actor.ProfilePicture" class="img-thumbnail" /> *@
+
+                @* @* <img src="~/images/cast/@Actor.ProfilePicture" class="img-thumbnail" style=" width: 70px; height :70px; " /> *@
+
+
+                <a asp-action="GetOneActor" asp-controller="Actor" asp-route-id="@Actor.Id"> <img src="~/images/cast/@Actor.ProfilePicture" class="img-thumbnail rounded-circle" style="width: 70px; height: 70px;" /></a>
+
+            } 
+            
+
+            
+            @* book button *@
+            <div class="card-body">
+            
+                    @if (Model.MovieStatus == MovieStatus.Expired)
+                    {
+                        <a class="btn btn-primary btn-lg disabled" style=" background-color: #e9ecef; border-color: #e9ecef; color: #6c757d; pointer-events: none;" role="button" aria-disabled="true">Book a ticket</a>
+
+                    }
+                    else
+                    {
+                        <a asp-action="AddToCart" asp-controller="Cart" asp-route-id="@Model.MovieId" class="btn btn-success btn-lg" role="button">Book a ticket</a>
+                    }
+
+            </div>
+        
+        @* Dates *@
+
+
+            <div class="card-body">
+                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                       
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                        </svg>
+                         Start Date: @Model.MovieStartDate.ToString("dddd, MMMM d, yyyy")
+                    </li>
+                    <li class="list-group-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                        </svg>
+                        End Date: @Model.MovieEndDate.ToString("dddd, MMMM d, yyyy")
+                    </li>
+                </ul>
+        @* View Icon*@
+                <br />
+                <div class="d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-eye me-2" width="32" height="32" viewBox="0 0 16 16">
+                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+                    </svg>
+                    <h1 class="h4">@Model.Views</h1>
+                </div>
+            </div>
+    
+        @* Video *@
+
+            <div class="card-body">
+            <video width="640" height="360" controls>
+                    <source src="@Model.MovieTrailerUrl" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            </div>
+        
+        </div>
+
+
+       
+</div>
+</div>

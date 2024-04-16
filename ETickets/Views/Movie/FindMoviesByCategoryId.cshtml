@@ -1,0 +1,12 @@
+﻿@using ETickets.ViewModels;
+@model List<MovieWithCinemaCategoryViewModel>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Movie">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">@ViewData["CategoryName"]</a></li>
+        
+    </ol>
+</nav>
+
+<partial name="_MoviesPartial"></partial>

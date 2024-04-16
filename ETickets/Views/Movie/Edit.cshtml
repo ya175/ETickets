@@ -1,0 +1,116 @@
+﻿@using ETickets.Data.Enums
+@using  ETickets.ViewModels
+@using ETickets.ViewModels.Movie;
+@model CreateEditMovieViewModel
+
+
+
+@{
+    SelectList CategoriesList = new SelectList(ViewBag.Categories, "Id", "Name");
+    SelectList CinemasList = new SelectList(ViewBag.Cinemas, "Id", "Name");
+    // SelectList ActorsList =new SelectList (ViewBag.Actors, "Id", "FirstName");
+}
+<form asp-action="Edit">
+    
+    <div class="form-group">
+        <input asp-for="MovieId" class="form-control" hidden>
+    </div>
+    <div class="form-group">
+        <label asp-for="MovieName"></label>
+        <input asp-for="MovieName" class="form-control" placeholder="Enter movie name">
+        <span asp-validation-for="MovieName" class="text-danger"></span>
+    </div>
+
+
+
+    <div class="form-group">
+        <label asp-for="MoviePrice"></label>
+        <input asp-for="MoviePrice" class="form-control" placeholder="Enter movie price">
+        <span asp-validation-for="MoviePrice" class="text-danger"></span>
+  
+    </div>
+    <div class="form-group">
+        <label asp-for="MovieImgUrl"></label>
+        <input asp-for="MovieImgUrl" class="form-control" placeholder="Enter movie image URL">
+        <span asp-validation-for="MovieImgUrl" class="text-danger"></span>
+  
+    </div>
+    <div class="form-group">
+        <label asp-for="MovieTrailerUrl"></label>
+        <input asp-for="MovieTrailerUrl" class="form-control" placeholder="Enter movie trailer URL">
+        <span asp-validation-for="MovieTrailerUrl" class="text-danger"></span>
+  
+    </div>
+    <div class="form-group">
+        <label asp-for="MovieStartDate"></label>
+        <input asp-for="MovieStartDate" class="form-control" type="date">
+        <span asp-validation-for="MovieStartDate" class="text-danger"></span>
+      
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MovieEndDate"></label>
+        <input asp-for="MovieEndDate" class="form-control" type="date">
+        <span asp-validation-for="MovieEndDate" class="text-danger"></span>
+  
+    </div>
+    <div class="form-group">
+        <label asp-for="MovieDescription"></label>
+        <textarea asp-for="MovieDescription" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="MovieDescription" class="text-danger"></span>
+  
+    </div>
+   
+    <div class="form-group">
+        <label asp-for="CinemaId"></label>
+        <select asp-for="CinemaId" class="form-control" asp-items="CinemasList" Sele placeholder="Enter cinema "></select>
+  
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" class="form-control" asp-items="CategoriesList" placeholder="Enter category "></select>
+  
+    </div>
+
+    <input name="Id" value="@Model.MovieId" hidden />
+
+    @* Actors *@
+    <div class="form-group">
+        <label>Select Actors:</label>
+        <br />
+        <br />
+        @foreach (var actor in ViewBag.Actors)
+        {
+
+            var isChecked = ViewBag.SelectedActors.Contains(actor) ? "checked" : "";
+
+            <div class="checkbox">
+
+                <input type="checkbox" name="SelectedActors" value="@actor.Id" @isChecked />
+
+                <label>@actor.FirstName</label>
+            </div>
+        }
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>
+
+@* 
+    TODO
+    //Check Viewmodel
+    //ViewData vs ViewBag
+    //Client validation
+    //Server Side validation
+    //labels Display*@
+
+
+
+@section Scripts {
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+}
